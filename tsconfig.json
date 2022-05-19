@@ -1,21 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ESNext",
-    "module": "ESNext",
+    "target": "es2018",
+    "module": "esnext",
     "moduleResolution": "node",
-    "declaration": true,
-    "sourceMap": true,
-    "importHelpers": true,
-    "inlineSources": true,
+    "noEmitOnError": true,
+    "lib": ["es2017", "dom"],
     "strict": true,
-    "noFallthroughCasesInSwitch": true,
-    "noImplicitReturns": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "allowJs": true,
-    "maxNodeModuleJsDepth": 2
+    "esModuleInterop": false,
+    "outDir": "out-tsc",
+    "rootDir": "./",
+    "experimentalDecorators": true
   },
-  "include": ["src/**/*"]
+  "include": ["./src/**/*.ts"]
 }
