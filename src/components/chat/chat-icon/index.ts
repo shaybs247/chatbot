@@ -4,7 +4,7 @@ import { customElement, property } from 'lit/decorators.js';
 @customElement('chat-icon')
 export class ChatIcon extends LitElement {
   static styles = css`
-    .wrapper {
+    :host {
       display: flex;
       position: fixed;
       z-index: 1;
@@ -32,14 +32,12 @@ export class ChatIcon extends LitElement {
 
   onClick() {
     this.dispatchEvent(
-      new CustomEvent('kaki', { detail: { value: !this.isOpen } })
+      new CustomEvent('onIconClicked', { detail: { value: !this.isOpen } })
     );
   }
   render() {
     return html`
-      <div class="wrapper">
-        <button class="button" @click=${this.onClick}>${this.isOpen}</button>
-      </div>
+      <button class="button" @click=${this.onClick}>${this.isOpen}</button>
     `;
   }
 }
