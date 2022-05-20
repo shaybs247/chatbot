@@ -5,8 +5,10 @@ import './header';
 import '../common/tooltip';
 import '../common/avatar';
 import '../common/input';
+import { SocketController } from '../../controller/socket-controller.js';
 
 export class Chat extends LitElement {
+  private readonly socket = new SocketController(this);
   static styles = css`
     #chat-window {
       display: flex;
@@ -32,7 +34,9 @@ export class Chat extends LitElement {
   }
 
   onSubmit(e: any) {
-    console.log('on-send', e.detail.value);
+    const msg = e.detail.value;
+    this.socket.sendMessage(msg);
+    console.log('on-send', msg);
   }
 
   render() {
