@@ -1,11 +1,44 @@
+const dotenv = require('dotenv').config();
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const { ServerApiVersion } = require('mongodb');
+
+const credentials = './cert/X509-cert-7480899816366233205.pem';
+
+const mongoose = require('mongoose');
 const { WELCOME_MESSAGE } = require('./services/bot');
 const {
   ioMessageHandler,
   sendPrivateMessage
 } = require('./services/message-handlers');
+const { addToDb } = require('./models/q-n-a');
+
+//setup database
+mongoose.Promise = global.Promise;
+
+mongoose.connect(
+  process.env.MONGODB_URL_PROD,
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+
+    sslKey: credentials,
+    sslCert: credentials,
+    serverApi: ServerApiVersion.v1
+  },
+  (error) => {
+    if (error) {
+      console.error(
+        'Please make sure Mongodb is installed and running!',
+        error
+      );
+      throw error;
+    } else console.log('connected to database!');
+  }
+);
+
+const db = mongoose.connection;
 
 const app = express();
 const httpServer = createServer(app);

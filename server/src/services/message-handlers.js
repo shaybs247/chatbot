@@ -3,10 +3,6 @@ const { CHANNEL_NAME } = require('./constants');
 
 const ioMessageHandler = (io, socket) => {
   socket.on(CHANNEL_NAME, (message) => {
-    console.log(
-      '🚀 ~ file: message-handlers.js ~ line 6 ~ socket.on ~ message',
-      message
-    );
     if (message.type === 'set-username') {
       sendPrivateMessage({
         io,

@@ -3,3 +3,5 @@ server/dist/
 dist/
 .vscode/launch.json
 out-tsc/
+.gitignore
+server/.env

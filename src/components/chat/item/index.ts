@@ -90,11 +90,11 @@ export class ChatItem extends LitElement {
     }
 
     .message.bot {
-      background-color: #c3fde9;
+      background-color: #c3fddd;
     }
 
     .message.bot::after {
-      border-right-color: #c3fde9;
+      border-right-color: #c3fddd;
     }
   `;
 
