@@ -5,7 +5,7 @@ const ioMessageHandler = (io, socket) => {
     if (message.text.search(new RegExp('Elon', 'i')) !== -1) {
       sendPrivateMessage({ io, socket, text: 'message from elon' });
     } else {
-      broadcastMessage({ io, message });
+      broadcastMessage({ io, socket, message });
     }
   });
 };
@@ -27,5 +27,7 @@ const broadcastMessage = ({ io, socket, message }) => {
 };
 
 module.exports = {
-  ioMessageHandler
+  ioMessageHandler,
+  sendPrivateMessage,
+  broadcastMessage
 };

@@ -1,7 +1,11 @@
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
-const { ioMessageHandler } = require('./services/message-handlers');
+const { WELCOME_MESSAGE } = require('./services/bot');
+const {
+  ioMessageHandler,
+  sendPrivateMessage
+} = require('./services/message-handlers');
 
 const app = express();
 const httpServer = createServer(app);
@@ -20,6 +24,8 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  sendPrivateMessage({ io, socket, text: WELCOME_MESSAGE });
+
   ioMessageHandler(io, socket);
 });
 
