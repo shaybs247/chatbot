@@ -1,27 +1,30 @@
 const express = require('express');
 const { createServer } = require('http');
 const { Server } = require('socket.io');
+const { ioMessageHandler } = require('./services/message-handlers');
 
 const app = express();
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
-  /* options */
+  cors: {
+    origin: '*',
+    methods: ['GET', 'POST']
+  }
 });
 
-io.on('connect', (socket) => {
-  // Say Hi to all connected clients
-  io.emit('broadcast', '[Server]: Welcome stranger!');
-
-  socket.on('message', (msg) => {
-    // console.log(`message received from user: ${msg.from}`);
-    // console.log(`message received content: ${msg.content}`);
-    io.emit('message', msg);
-  });
-
-  // Say Bye to all connected clients
-  socket.on('disconnect', function () {
-    io.emit('broadcast', '[Server]: Bye, bye, stranger!');
+app.get('/', (req, res) => {
+  res.json({
+    message:
+      'Welcome to Elon\'s chat server. Please send all your requests to the "elon/chat" channel'
   });
 });
 
-httpServer.listen(3000);
+io.on('connection', (socket) => {
+  ioMessageHandler(io, socket);
+});
+
+const port = process.env.PORT || 3000;
+httpServer.listen(port, () => {
+  console.log('Server listens on port:', port);
+  console.log(`Server runs on: http://localhost:${port}`);
+});
