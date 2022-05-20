@@ -7,11 +7,11 @@ export class Header extends LitElement {
   static styles = css`
     :host {
       display: flex;
-      min-height: 75px;
       color: white;
       transition: height 160ms ease-out 0s;
       background: linear-gradient(135deg, rgb(0, 30, 43) 0%, rgb(0, 0, 0) 100%);
       padding: 24px;
+      line-height: 1.4em;
     }
 
     #description {

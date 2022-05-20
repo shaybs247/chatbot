@@ -2,15 +2,14 @@ import { LitElement, html, css } from 'lit';
 import { state } from 'lit/decorators.js';
 import { SocketController } from '../../controller/socket-controller.js';
 import { map } from 'lit/directives/map.js';
-import { unsafeHTML } from 'lit/directives/unsafe-html.js';
 
 import './icon';
 import './header';
 import './conversation';
+import './item';
 import '../common/tooltip';
 import '../common/avatar';
 import '../common/input';
-import { stringToMarkup } from '../../helpers/string-to-markup.js';
 
 export class Chat extends LitElement {
   private readonly socket = new SocketController(this);
@@ -64,11 +63,7 @@ export class Chat extends LitElement {
           <chat-header></chat-header>
           <chat-conversation>
             ${map(this.socket.messages, (msg, index) => {
-              return html`
-                <li style="white-space: pre-line">
-                  ${unsafeHTML(stringToMarkup(msg.text))}
-                </li>
-              `;
+              return html` <chat-item .message="${msg}"> </chat-item> `;
             })}
           </chat-conversation>
           <input-element
