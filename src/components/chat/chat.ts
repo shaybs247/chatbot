@@ -1,11 +1,13 @@
 import { LitElement, html, css } from 'lit';
-import { query, state } from 'lit/decorators.js';
+import { state } from 'lit/decorators.js';
+import { SocketController } from '../../controller/socket-controller.js';
+import { map } from 'lit/directives/map.js';
 import './icon';
 import './header';
+import './conversation';
 import '../common/tooltip';
 import '../common/avatar';
 import '../common/input';
-import { SocketController } from '../../controller/socket-controller.js';
 
 export class Chat extends LitElement {
   private readonly socket = new SocketController(this);
@@ -56,6 +58,11 @@ export class Chat extends LitElement {
       >
         <div id="chat-window">
           <chat-header></chat-header>
+          <chat-conversation>
+            ${map(this.socket.messages, (msg, index) => {
+              return html` <li style="white-space: pre-line">${msg.text}</li> `;
+            })}
+          </chat-conversation>
           <input-element
             id="input"
             @onSubmit="${this.onSubmit}"
