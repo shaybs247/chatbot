@@ -2,12 +2,15 @@ import { LitElement, html, css } from 'lit';
 import { state } from 'lit/decorators.js';
 import { SocketController } from '../../controller/socket-controller.js';
 import { map } from 'lit/directives/map.js';
+import { unsafeHTML } from 'lit/directives/unsafe-html.js';
+
 import './icon';
 import './header';
 import './conversation';
 import '../common/tooltip';
 import '../common/avatar';
 import '../common/input';
+import { stringToMarkup } from '../../helpers/string-to-markup.js';
 
 export class Chat extends LitElement {
   private readonly socket = new SocketController(this);
@@ -37,7 +40,8 @@ export class Chat extends LitElement {
 
   onSubmit(e: any) {
     const msg = e.detail.value;
-    this.socket.sendMessage(msg);
+
+    this.socket.sendMessage({ msg });
     console.log('on-send', msg);
   }
 
@@ -60,11 +64,16 @@ export class Chat extends LitElement {
           <chat-header></chat-header>
           <chat-conversation>
             ${map(this.socket.messages, (msg, index) => {
-              return html` <li style="white-space: pre-line">${msg.text}</li> `;
+              return html`
+                <li style="white-space: pre-line">
+                  ${unsafeHTML(stringToMarkup(msg.text))}
+                </li>
+              `;
             })}
           </chat-conversation>
           <input-element
             id="input"
+            .username="${this.socket.username}"
             @onSubmit="${this.onSubmit}"
           ></input-element>
         </div>

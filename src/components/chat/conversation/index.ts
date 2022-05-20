@@ -13,7 +13,6 @@ export class Conversation extends LitElement {
     ul {
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
     }
   `;
 

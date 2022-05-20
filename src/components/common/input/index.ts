@@ -1,9 +1,12 @@
-import { LitElement, html, css, PropertyValues } from 'lit';
-import { customElement, property, query } from 'lit/decorators.js';
+import { LitElement, html, css } from 'lit';
+import { customElement, property, query, state } from 'lit/decorators.js';
 
 @customElement('input-element')
 export class InputElement extends LitElement {
+  @property({ type: String }) username = '';
   @property({ type: String }) value = '';
+  @state() _isMetaPressed = false;
+
   @query('#submit-icon')
   submitIcon!: HTMLElement;
 
@@ -22,18 +25,15 @@ export class InputElement extends LitElement {
       height: 100%;
       font-family: 'Roboto', sans-serif;
       font-size: 14px;
-      font-weight: normal;
-      line-height: 1.33;
       background-color: rgb(255, 255, 255);
       white-space: pre-wrap;
       overflow-wrap: break-word;
-      max-height: 200px;
-      overflow: hidden;
+      overflow: auto;
       color: rgb(0, 0, 0);
       resize: none;
       border: none;
       transition: background-color 200ms ease 0s, box-shadow 200ms ease 0s;
-      outline-offset: -5px;
+      outline-offset: -2px;
     }
 
     #submit-button {
@@ -67,6 +67,26 @@ export class InputElement extends LitElement {
     this.value = '';
   }
 
+  handleKeyDown(e: KeyboardEvent) {
+    if (e) {
+      if (this._isMetaPressed && e.key == 'Enter') {
+        this.value = this.value + '\n';
+      } else if (this._isMetaPressed) {
+        this._isMetaPressed = false;
+      }
+
+      if (e.key == 'Meta') {
+        this._isMetaPressed = true;
+      }
+    }
+  }
+  handleKeyUp(e: KeyboardEvent) {
+    if (e && e.key == 'Enter') {
+      e.preventDefault();
+      this.onSubmit();
+    }
+  }
+
   updated() {
     if (this.value) {
       this.submitIcon.style.visibility = 'visible';
@@ -76,11 +96,15 @@ export class InputElement extends LitElement {
   render() {
     return html`<textarea
         name="message"
-        placeholder="Start typing..."
+        placeholder=${this.username
+          ? `${this.username}, Please write us something...`
+          : 'Start typing...'}
         aria-label="Start typing..."
         tabindex="0"
         .value="${this.value}"
-        @input=${this.handleInput}
+        @input="${this.handleInput}"
+        @keydown="${this.handleKeyDown}"
+        @keypress="${this.handleKeyUp}"
       ></textarea>
       <button id="submit-button" @click="${this.onSubmit}">
         <svg
