@@ -1,19 +1,11 @@
-import { css, LitElement, html, PropertyValues } from 'lit';
+import { LitElement, html, PropertyValues } from 'lit';
 import { customElement, property, query } from 'lit/decorators.js';
-import '@ui5/webcomponents/dist/Popover.js';
-import { RefOrCallback, createRef } from 'lit/directives/ref.js';
 import { createPopper } from '@popperjs/core';
-import {
-  autoPlacement,
-  computePosition,
-  offset,
-  ReferenceElement,
-  shift
-} from '@floating-ui/dom';
 
 @customElement('chat-tooltip')
 export class Tooltip extends LitElement {
   @property({ type: Boolean }) isOpen = false;
+  @property({ type: Array }) offset = [0, 0];
 
   @property({ type: Object }) target: Element | null = null;
 
@@ -30,7 +22,7 @@ export class Tooltip extends LitElement {
           {
             name: 'offset',
             options: {
-              offset: [-60, 10]
+              offset: this.offset
             }
           }
         ]

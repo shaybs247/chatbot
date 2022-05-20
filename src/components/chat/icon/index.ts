@@ -12,18 +12,15 @@ export class ChatIcon extends LitElement {
       bottom: 0;
       margin-bottom: 30px;
       margin-right: 30px;
-    }
-    .button {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      width: 60px;
-      height: 60px;
       transition: all 0.7s ease-out;
       box-shadow: 0 2px 20px 0 rgba(0, 0, 0, 0.07);
-      border: solid 4px #fff;
       border-radius: 50%;
-      background-color: #ccd5ae;
+    }
+    .button {
+      display: contents;
+      border: none;
+      border-radius: 50%;
+      background-color: transparent;
       cursor: pointer;
     }
   `;
@@ -37,7 +34,7 @@ export class ChatIcon extends LitElement {
   }
   render() {
     return html`
-      <button class="button" @click=${this.onClick}>${this.isOpen}</button>
+      <button class="button" @click=${this.onClick}><slot></slot></button>
     `;
   }
 }
