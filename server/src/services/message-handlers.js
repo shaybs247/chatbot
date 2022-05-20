@@ -1,5 +1,6 @@
 const { createUsernameSetMessage } = require('./bot');
-const { CHANNEL_NAME } = require('./constants');
+const { addQuestion, addAnswer } = require('../models/q-n-a');
+const { CHANNEL_NAME, Q_PREFIX, A_PREFIX } = require('./constants');
 
 const ioMessageHandler = (io, socket) => {
   socket.on(CHANNEL_NAME, (message) => {
@@ -9,6 +10,10 @@ const ioMessageHandler = (io, socket) => {
         socket,
         text: createUsernameSetMessage(message.username)
       });
+    } else if (message.text.startsWith(Q_PREFIX)) {
+      handleQuestion(message, io, socket);
+    } else if (message.text.startsWith(A_PREFIX)) {
+      handleAnswer(message, io, socket);
     } else if (message.text.search(new RegExp('Elon', 'i')) !== -1) {
       sendPrivateMessage({ io, socket, text: 'message from elon' });
     } else {
@@ -31,6 +36,18 @@ const broadcastMessage = ({ io, socket, message }) => {
     ...message,
     senderId: socket.id
   });
+};
+
+const handleAnswer = (message, io, socket) => {
+  const question = message.text.slice(2).trimStart();
+  addQuestion({ question });
+  broadcastMessage({ io, socket, message });
+};
+
+const handleQuestion = (message, io, socket) => {
+  const question = message.text.slice(2).trimStart();
+  addQuestion({ question });
+  broadcastMessage({ io, socket, message });
 };
 
 module.exports = {

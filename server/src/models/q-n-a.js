@@ -1,20 +1,49 @@
 const mongoose = require('mongoose');
+const MyObjectId = mongoose.Types.ObjectId;
 
-const QnASchema = new mongoose.Schema(
+const QuestionSchema = new mongoose.Schema(
   {
-    question: String
+    question: { type: String, unique: true },
+    answers: [MyObjectId]
   },
 
   { timestamps: true }
 );
 
-const QnA = mongoose.model('QnA', QnASchema);
+const Questions = mongoose.model('Questions', QuestionSchema);
 
-module.exports = QnA;
+const AnswersSchema = new mongoose.Schema(
+  {
+    question: { type: MyObjectId, ref: 'Questions' },
+    answer: String
+  },
 
-module.exports.addToDb = (qna) => {
-  new QnA(qna).save(function (err, qna) {
-    if (err) return console.error('cannot put on db', err);
-    if (qna) return console.log(qna, 'added to the db');
-  });
+  { timestamps: true }
+);
+
+const Answers = mongoose.model('Answers', AnswersSchema);
+
+module.exports.addQuestion = async (question) => {
+  try {
+    const resp = await Questions.findOne(question);
+    if (!resp) {
+      const questionEntity = new Questions(question);
+      await questionEntity.save();
+      console.log(question, 'added to the db');
+    }
+  } catch (err) {
+    console.error('cannot put on db', err);
+  }
+};
+
+module.exports.addAnswer = async ({ question, answer }) => {
+  try {
+    const questionEntity = await Questions.find({ question });
+    const answerEntity = new Answers({ question: questionEntity._id, answer });
+
+    await answerEntity.save();
+    console.log(answer, 'added to the db');
+  } catch (err) {
+    console.error('cannot put on db', err);
+  }
 };

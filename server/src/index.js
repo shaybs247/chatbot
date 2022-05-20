@@ -12,7 +12,7 @@ const {
   ioMessageHandler,
   sendPrivateMessage
 } = require('./services/message-handlers');
-const { addToDb } = require('./models/q-n-a');
+const { addQuestion, addAnswer } = require('./models/q-n-a');
 
 //setup database
 mongoose.Promise = global.Promise;
