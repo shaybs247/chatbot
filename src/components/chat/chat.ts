@@ -4,6 +4,7 @@ import './icon';
 import './header';
 import '../common/tooltip';
 import '../common/avatar';
+import '../common/input';
 
 export class Chat extends LitElement {
   static styles = css`
@@ -17,16 +18,21 @@ export class Chat extends LitElement {
       border-radius: 8px;
       box-shadow: rgba(0, 0, 0, 0.16) 0px 5px 40px;
     }
-  `;
 
-  @query('chat-icon')
-  chatIcon: any;
+    #input {
+      margin-top: auto;
+    }
+  `;
 
   @state()
   private _isOpen = true;
 
   onIconClicked() {
     this._isOpen = !this._isOpen;
+  }
+
+  onSubmit(e: any) {
+    console.log('on-send', e.detail.value);
   }
 
   render() {
@@ -46,15 +52,10 @@ export class Chat extends LitElement {
       >
         <div id="chat-window">
           <chat-header></chat-header>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages, and
-          more recently with desktop publishing software like Aldus PageMaker
-          including versions of Lorem Ipsum.t
+          <input-element
+            id="input"
+            @onSubmit="${this.onSubmit}"
+          ></input-element>
         </div>
       </chat-tooltip>
     `;

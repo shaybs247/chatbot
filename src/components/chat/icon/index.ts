@@ -32,6 +32,7 @@ export class ChatIcon extends LitElement {
       new CustomEvent('onIconClicked', { detail: { value: !this.isOpen } })
     );
   }
+
   render() {
     return html`
       <button class="button" @click=${this.onClick}><slot></slot></button>
