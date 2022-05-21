@@ -1,6 +1,8 @@
-const { createUsernameSetMessage } = require('./bot');
-const { addQuestion, addAnswer } = require('../models/q-n-a');
+const { createUsernameSetMessage, createAnswersMessage } = require('./bot');
+const { addQuestion, addAnswer, getAnswers } = require('../models/q-n-a');
 const { CHANNEL_NAME, Q_PREFIX, A_PREFIX } = require('./constants');
+
+let currentQuestion = '';
 
 const ioMessageHandler = (io, socket) => {
   socket.on(CHANNEL_NAME, (message) => {
@@ -39,15 +41,28 @@ const broadcastMessage = ({ io, socket, message }) => {
 };
 
 const handleAnswer = (message, io, socket) => {
-  const question = message.text.slice(2).trimStart();
-  addQuestion({ question });
   broadcastMessage({ io, socket, message });
+
+  const answer = message.text.slice(2).trimStart();
+  addAnswer({ question: currentQuestion, answer });
 };
 
-const handleQuestion = (message, io, socket) => {
-  const question = message.text.slice(2).trimStart();
-  addQuestion({ question });
+const handleQuestion = async (message, io, socket) => {
   broadcastMessage({ io, socket, message });
+
+  const question = message.text.slice(2).trimStart();
+  currentQuestion = question;
+
+  const answers = await getAnswers({ question });
+  if (answers) {
+    sendPrivateMessage({
+      io,
+      socket,
+      text: createAnswersMessage(message.username, answers)
+    });
+  }
+
+  addQuestion({ question });
 };
 
 module.exports = {

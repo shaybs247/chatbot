@@ -16,8 +16,15 @@ const createUsernameSetMessage = (
 You can choose the type of message you would like to send over the channel or you can send a message to me by referring to my name.
 which is **Elon** of course 🤠`;
 
+const createAnswersMessage = (username, answers) => `Hey **${username}**,
+Hooray! 🎊 🎊
+I found some previous answers to you questions:
+${answers.map((ans, i) => `**${i}.** ${ans}`).join('\n')}
+`;
+
 module.exports = {
   GUIDELINES_MESSAGE,
   WELCOME_MESSAGE,
-  createUsernameSetMessage
+  createUsernameSetMessage,
+  createAnswersMessage
 };

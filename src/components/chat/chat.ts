@@ -31,7 +31,7 @@ export class Chat extends LitElement {
   `;
 
   @state()
-  private _isOpen = true;
+  private _isOpen = false;
 
   onIconClicked() {
     this._isOpen = !this._isOpen;
