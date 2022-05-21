@@ -29,6 +29,11 @@ export class ChatItem extends LitElement {
       font-size: 18px;
       border-radius: 6px;
       border: 2px solid black;
+      text-overflow: ellipsis;
+      max-width: 100px;
+      overflow: hidden;
+      white-space: nowrap;
+      flex: 0 0 auto;
     }
 
     .username.me {
