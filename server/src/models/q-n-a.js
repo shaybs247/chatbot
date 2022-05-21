@@ -22,12 +22,15 @@ const AnswersSchema = new mongoose.Schema(
 
 const Answers = mongoose.model('Answers', AnswersSchema);
 
-module.exports.addQuestion = async (question) => {
+module.exports.addQuestion = async ({ question }) => {
   try {
-    const resp = await Questions.findOne(question);
+    const normalizeQuestion = question.toLowerCase();
+
+    const resp = await Questions.findOne({ question: normalizeQuestion });
     if (!resp) {
-      const questionEntity = new Questions(question);
+      const questionEntity = new Questions({ question: normalizeQuestion });
       await questionEntity.save();
+
       console.log(question, 'added to the db');
     } else {
       console.log(question, 'already exists');
@@ -40,14 +43,18 @@ module.exports.addQuestion = async (question) => {
 module.exports.addAnswer = async ({ question, answer }) => {
   try {
     if (!question) {
-      console.log(answer, 'will not append no question was asked');
+      console.log(answer, 'will not append, no question was asked');
       return;
     }
+
+    const normalizeQuestion = question.toLowerCase();
 
     const answerEntity = new Answers({ answer });
     await answerEntity.save();
 
-    const questionEntity = await Questions.findOne({ question });
+    const questionEntity = await Questions.findOne({
+      question: normalizeQuestion
+    });
 
     questionEntity.answers.push(answerEntity._id);
     await questionEntity.save();
@@ -59,9 +66,9 @@ module.exports.addAnswer = async ({ question, answer }) => {
 
 module.exports.getAnswers = async ({ question }) => {
   try {
-    const questionEntity = await Questions.findOne({ question }).populate(
-      'answers'
-    );
+    const questionEntity = await Questions.findOne({
+      question: question.toLowerCase()
+    }).populate('answers');
 
     if (questionEntity === null) {
       return [];

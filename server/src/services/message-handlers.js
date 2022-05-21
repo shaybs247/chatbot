@@ -63,7 +63,9 @@ const handleQuestion = async ({ io, socket, message }) => {
   const question = message.text.slice(2).trimStart();
   if (!question) {
     sendElonMessage({ io, socket, text: 'your question was empty, try again' });
+    return;
   }
+
   currentQuestion = question;
 
   const answers = await getAnswers({ question });
