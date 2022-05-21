@@ -63,6 +63,10 @@ module.exports.getAnswers = async ({ question }) => {
       'answers'
     );
 
+    if (questionEntity === null) {
+      return [];
+    }
+
     return questionEntity.answers.map((ansSchema) => ansSchema.answer);
   } catch (err) {
     console.error('cannot put on db', err);

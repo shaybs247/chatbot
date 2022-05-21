@@ -10,9 +10,8 @@ const mongoose = require('mongoose');
 const { WELCOME_MESSAGE } = require('./services/bot');
 const {
   ioMessageHandler,
-  sendPrivateMessage
+  sendElonMessage
 } = require('./services/message-handlers');
-const { addQuestion, addAnswer } = require('./models/q-n-a');
 
 //setup database
 mongoose.Promise = global.Promise;
@@ -57,7 +56,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  sendPrivateMessage({ io, socket, text: WELCOME_MESSAGE });
+  sendElonMessage({ io, socket, text: WELCOME_MESSAGE });
 
   ioMessageHandler(io, socket);
 });

@@ -3,6 +3,7 @@ import { customElement, property } from 'lit/decorators.js';
 
 @customElement('chat-icon')
 export class ChatIcon extends LitElement {
+  @property({ type: Boolean }) isOpen = false;
   static styles = css`
     :host {
       display: flex;
@@ -25,8 +26,6 @@ export class ChatIcon extends LitElement {
     }
   `;
 
-  @property({ type: Boolean }) isOpen = false;
-
   onClick() {
     this.dispatchEvent(
       new CustomEvent('onIconClicked', { detail: { value: !this.isOpen } })
@@ -35,7 +34,9 @@ export class ChatIcon extends LitElement {
 
   render() {
     return html`
-      <button class="button" @click=${this.onClick}><slot></slot></button>
+      <button class="button" @click=${this.onClick}>
+        <slot></slot>
+      </button>
     `;
   }
 }
