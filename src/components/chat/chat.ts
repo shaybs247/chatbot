@@ -41,7 +41,6 @@ export class Chat extends LitElement {
     const msg = e.detail.value;
 
     this.socket.sendMessage({ msg });
-    console.log('on-send', msg);
   }
 
   render() {

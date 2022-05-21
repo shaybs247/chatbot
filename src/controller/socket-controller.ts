@@ -44,8 +44,6 @@ export class SocketController implements ReactiveController {
 
       this.messages = [...this.messages, { ...data, type }];
       this.host.requestUpdate();
-      console.log('recived new message:');
-      console.log(data);
     });
   }
 
