@@ -74,10 +74,6 @@ const handleQuestion = async ({ io, socket, message }) => {
       text: createAnswersMessage(message.username, answers)
     });
   } else {
-    console.log(
-      '🚀 ~ file: message-handlers.js ~ line 77 ~ handleQuestion ~ YOU_CAN_ASK_ME',
-      YOU_CAN_ASK_ME
-    );
     sendElonMessage({
       io,
       socket,
@@ -107,10 +103,6 @@ const handleElonQuestion = async ({ io, socket, message }) => {
     .replace(elonRegex, '')
     .replace(/[^\w\s]/gi, '')
     .trimStart();
-  console.log(
-    '🚀 ~ file: message-handlers.js ~ line 95 ~ handleElonQuestion ~ question',
-    question
-  );
 
   const answer = await getWolframAnswer(question);
 

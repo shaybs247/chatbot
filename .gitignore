@@ -7,3 +7,6 @@ out-tsc/
 server/.env
 server/cert/*
 newrelic_agent.log
+
+server/.DS_Store
+.DS_Store
