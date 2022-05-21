@@ -5,4 +5,5 @@ dist/
 out-tsc/
 .gitignore
 server/.env
+server/cert/*
 newrelic_agent.log
