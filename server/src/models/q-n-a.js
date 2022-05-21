@@ -27,17 +27,14 @@ module.exports.addQuestion = async (question) => {
     const resp = await Questions.findOne(question);
     if (!resp) {
       const questionEntity = new Questions(question);
-      questionEntity.save((err, entity) => {
-        if (err) console.error('cannot put on db', err);
-        else if (entity) console.log(entity.question, 'added to the db');
-      });
-
-      return question._id;
+      await questionEntity.save();
+      console.log(question, 'added to the db');
     } else {
       console.log(question, 'already exists');
-      return resp._id;
     }
-  } catch (err) {}
+  } catch (err) {
+    console.error('cannot put on db', err);
+  }
 };
 
 module.exports.addAnswer = async ({ question, answer }) => {
